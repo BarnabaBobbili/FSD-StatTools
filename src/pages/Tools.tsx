@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,17 +12,34 @@ import { DatasetComparison } from "@/components/DatasetComparison";
 import { AdvancedHypothesisTest } from "@/components/AdvancedHypothesisTest";
 import { ConfidenceIntervals } from "@/components/ConfidenceIntervals";
 import { SimulationTools } from "@/components/SimulationTools";
-import { RegressionVisualization } from "@/components/RegressionVisualization";
-import { SpreadsheetDataEntry } from "@/components/SpreadsheetDataEntry";
 import { DistributionType, DistributionParams } from "@/lib/statistical";
 import { BarChart3, Calculator, TestTube, TrendingUp, Sigma, GitCompare, Target, Dices } from "lucide-react";
 
 const Tools = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [distribution, setDistribution] = useState<DistributionType>("normal");
   const [params, setParams] = useState<DistributionParams[DistributionType]>({
     mean: 0,
     std: 1
   } as DistributionParams["normal"]);
+
+  // Get initial tab from URL or default to "distributions"
+  const initialTab = searchParams.get("tab") || "distributions";
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Update active tab when URL changes
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab);
+    }
+  }, [searchParams, activeTab]);
+
+  // Update URL when tab changes
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setSearchParams({ tab: value });
+  };
 
   // Load jStat library dynamically
   useEffect(() => {
@@ -107,7 +125,7 @@ const Tools = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
-        <Tabs defaultValue="distributions" className="space-y-8">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-8">
           <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 lg:w-fit mx-auto">
             <TabsTrigger value="distributions" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />

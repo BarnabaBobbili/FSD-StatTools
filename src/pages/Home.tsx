@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Sigma, 
   BarChart3, 
@@ -18,41 +18,50 @@ import {
 } from "lucide-react";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const features = [
     {
       icon: BarChart3,
       title: "Distribution Analysis",
-      description: "Visualize and analyze Normal, Binomial, Poisson, Student's t, Uniform, and Exponential distributions with interactive charts."
+      description: "Visualize and analyze Normal, Binomial, Poisson, Student's t, Uniform, and Exponential distributions with interactive charts.",
+      route: "/distributions"
     },
     {
       icon: TrendingUp,
       title: "Statistical Analysis",
-      description: "Calculate descriptive statistics, correlation, regression analysis with comprehensive data visualizations."
+      description: "Calculate descriptive statistics, correlation, regression analysis with comprehensive data visualizations.",
+      route: "/analysis"
     },
     {
       icon: TestTube,
       title: "Hypothesis Testing",
-      description: "Perform t-tests, chi-square, ANOVA, Mann-Whitney U, and other statistical tests with detailed results."
+      description: "Perform t-tests, chi-square, ANOVA, Mann-Whitney U, and other statistical tests with detailed results.",
+      route: "/hypothesis"
     },
     {
       icon: Calculator,
       title: "Probability Calculator",
-      description: "Calculate probabilities, quantiles, and cumulative distribution functions for various distributions."
+      description: "Calculate probabilities, quantiles, and cumulative distribution functions for various distributions.",
+      route: "/probability"
     },
     {
       icon: GitCompare,
       title: "Dataset Comparison",
-      description: "Compare multiple datasets side-by-side with visual analysis and statistical comparisons."
+      description: "Compare multiple datasets side-by-side with visual analysis and statistical comparisons.",
+      route: "/compare"
     },
     {
       icon: Target,
       title: "Confidence Intervals",
-      description: "Calculate confidence intervals for means, proportions, and differences with customizable confidence levels."
+      description: "Calculate confidence intervals for means, proportions, and differences with customizable confidence levels.",
+      route: "/confidence"
     },
     {
       icon: Dices,
       title: "Monte Carlo Simulations",
-      description: "Run simulations for Central Limit Theorem, hypothesis testing, and custom probability experiments."
+      description: "Run simulations for Central Limit Theorem, hypothesis testing, and custom probability experiments.",
+      route: "/simulations"
     }
   ];
 
@@ -73,6 +82,10 @@ const Home = () => {
       description: "Accurate statistical computations"
     }
   ];
+
+  const handleFeatureClick = (route: string) => {
+    navigate(route);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-muted">
@@ -132,16 +145,28 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="shadow-card hover:shadow-elegant transition-shadow">
+            <Card 
+              key={index} 
+              className="shadow-card hover:shadow-elegant transition-all duration-300 cursor-pointer group hover:scale-105 hover:border-primary/50"
+              onClick={() => handleFeatureClick(feature.route)}
+            >
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <feature.icon className="h-6 w-6 text-primary" />
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <feature.icon className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
                 </div>
-                <CardTitle className="text-xl">{feature.title}</CardTitle>
+                <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                  {feature.title}
+                </CardTitle>
                 <CardDescription className="text-base">
                   {feature.description}
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+                  Explore Tool
+                  <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </CardContent>
             </Card>
           ))}
         </div>
