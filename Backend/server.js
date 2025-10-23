@@ -204,9 +204,9 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log('='.repeat(50));
   console.log(`🚀 StatTools Backend Server`);
-  console.log(`📊 Running on http://localhost:${PORT}`);
-  console.log(`📝 API Docs: http://localhost:${PORT}/api/info`);
-  console.log(`❤️  Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`📊 Running on https://fsd-stattools.onrender.com:${PORT}`);
+  console.log(`📝 API Docs: https://fsd-stattools.onrender.com:${PORT}/api/info`);
+  console.log(`❤️  Health Check: https://fsd-stattools.onrender.com:${PORT}/api/health`);
   console.log('='.repeat(50));
 });
 
